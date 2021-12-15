@@ -1,5 +1,3 @@
-
-
 export const pad = (number, length) => {
   let str = "" + number;
   while (str.length < length) {
@@ -37,5 +35,5 @@ export const formatTimer = (time) => {
   const hours = time.substr(0, 2);
   const minutes = time.substr(2, 2);
   const seconds = time.substr(4, 2);
-  return `${hours} ${minutes}' ${seconds}"`;
+  return `${pad(hours, 2)} ${pad(minutes, 2)}' ${pad(seconds, 2)}"`;
 };

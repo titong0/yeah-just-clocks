@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
+import { FiPlay } from "react-icons/fi";
+import { AiOutlinePause, AiOutlineDelete } from "react-icons/ai";
+import { HiOutlineClock } from "react-icons/hi";
+import { useState, useEffect, useRef } from "react";
 import { formatLaps, formatMs, pad } from "../helpers";
 
-let totalMs = 0;
-let intervalID = null;
 const Stopwatch = () => {
+  const totalMs = useRef(0);
+  const intervalID = useRef(null);
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(["0", "0", "0"]);
   const [laps, setLaps] = useState([]);
   const run = () => {
-    totalMs += 30;
-    setTime(formatMs(totalMs));
+    totalMs.current += 30;
+    setTime(formatMs(totalMs.current));
   };
   const lap = () => {
-    setLaps([...laps, totalMs]);
+    setLaps([...laps, totalMs.current]);
   };
   const reset = () => {
-    totalMs = 0;
+    totalMs.current = 0;
     setTime([0, 0, 0]);
     setLaps([]);
     setRunning(false);
@@ -23,9 +26,9 @@ const Stopwatch = () => {
 
   useEffect(() => {
     if (running) {
-      intervalID = setInterval(run, 30);
+      intervalID.current = setInterval(run, 30);
     } else {
-      clearInterval(intervalID);
+      clearInterval(intervalID.current);
     }
   }, [running]);
 
@@ -36,12 +39,12 @@ const Stopwatch = () => {
 
         <div className="time">
           {`
-        ${pad(time[0], 2)}:${pad(time[1], 2)}.${time[2]}
+        ${pad(time[0], 2)}:${pad(time[1], 2)}.${pad(time[2], 2)}
         `}
         </div>
         <div className="controls">
           <button
-            className={`control ${running ? "pause" : "start"}`}
+            className={`control start`}
             onClick={
               running
                 ? () => setRunning(false)
@@ -50,18 +53,18 @@ const Stopwatch = () => {
                   }
             }
           >
-            {`${running ? "Pause" : "Start"}`}
+            {running ? <AiOutlinePause /> : <FiPlay />}
           </button>
           <button className="control lap" onClick={lap}>
-            Lap
+            <HiOutlineClock />
           </button>
           <button className="control danger" onClick={reset}>
-            Reset
+            <AiOutlineDelete />
           </button>
         </div>
       </div>
       <div className="laps-container">
-        <ol className="laps">
+        <ol className={`${laps.length ? "laps" : "hide"}`}>
           {laps.map((currLap, idx) => {
             const { diff, total } = formatLaps(currLap, laps[idx - 1]);
             return (

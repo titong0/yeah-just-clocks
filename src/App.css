@@ -3,6 +3,7 @@
   --primary: hsl(238, 17%, 36%);
   --danger: hsl(349, 65%, 80%);
   --navHeight: 8vh;
+  --trTime: 200ms;
 }
 nav {
   position: fixed;
@@ -27,6 +28,11 @@ body {
   padding-top: calc(var(--navHeight) + 25px);
   background-color: var(--bg);
 }
+.hide {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
 .container {
   display: grid;
   justify-items: center;
@@ -35,35 +41,42 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 2em;
+  justify-content: center;
+  font-size: 1.6em;
   padding: 3rem 0;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .time {
   font-family: Tahoma, sans-serif;
-  /* font-weight: 700; */
-  font-size: 2.2em;
+  font-size: 18vw;
   color: hsl(0, 0%, 15%);
 }
 
 .controls {
   display: flex;
-  justify-content: space-around;
-  padding: 1.4rem 0;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  font-size: 1em;
+  transition: var(--trTime);
 }
 .control {
-  margin: 0 0.8rem;
-  padding: 0.3em 0.3rem;
-  font-size: inherit;
-  font-size: 0.8em;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 12px;
   box-shadow: rgb(43, 43, 43) 2px 3px 7px;
   transition: color 100ms;
   cursor: pointer;
-  width: 24vw;
+}
+.control svg {
+  width: 40px;
+  height: auto;
 }
 .control:active {
   filter: brightness(75%);
@@ -77,9 +90,7 @@ body {
 .start:hover {
   box-shadow: hsl(238, 17%, 30%) 1px 2px 7px;
 }
-.pause {
-  background-color: #ddd;
-}
+
 .lap {
   background-color: hsl(180, 37%, 85%, 0.3);
 }
@@ -94,34 +105,38 @@ body {
   padding-left: 2.3em;
   font-size: 1.3em;
   font-family: "PT Mono";
+  transition: 700ms;
 }
 
 .laps > li {
   margin: 0.5em 0;
-}
-.laps::-moz-list-number {
-  background-color: red;
 }
 
 .numpad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 0.3em;
+  gap: 0.5em;
+  transition: var(--trTime);
 }
 .numpad > button {
-  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7em;
   font-family: "PT mono";
-  padding: 0.06em 0.3em;
-  border-radius: 10px;
+  border-radius: 25px;
   border: 2px solid;
+  cursor: pointer;
 }
 .numpad .num {
-  background-color: burlywood;
+  padding: .6rem 0.6rem;
+  background-color: aliceblue;
 }
 
-.numpad .num:hover {
-  filter: brightness(120%);
+.num:active {
+  background: gray;
+  border-radius: 5px;
 }
 
 .numpad .start {
@@ -139,5 +154,8 @@ body {
   .laps {
     grid-column: 1 / 4;
     grid-row: 1 / 3;
+  }
+  .numpad .num:hover {
+    filter: brightness(40%);
   }
 }

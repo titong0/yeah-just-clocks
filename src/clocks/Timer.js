@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NumPad from "./NumPad";
 import { pad, formatTimer } from "../helpers";
-
-let timeLeft = "000000";
+import { AiOutlinePause, AiOutlineClose } from "react-icons/ai";
+import { FiPlay } from "react-icons/fi";
 
 const Timer = () => {
-  const [intervalID, setIntervalID] = useState(null);
+  const intervalId = useRef("");
+  const timeLeft = useRef("000000");
   const [running, toggleRunning] = useState(false);
   const [started, setStarted] = useState(false);
   const [time, setTime] = useState(`000000`);
 
   const loop = () => {
-    let [hours, minutes, seconds] = timeLeft.match(/.{1,2}/g);
+    let [hours, minutes, seconds] = timeLeft.current.match(/.{1,2}/g);
 
     if (seconds - 1 >= 0) {
       seconds--;
@@ -21,26 +22,23 @@ const Timer = () => {
     } else {
       hours--;
       minutes = 59;
+      seconds = 59;
     }
     seconds = pad(seconds, 2);
     minutes = pad(minutes, 2);
     hours = pad(hours, 2);
-    timeLeft = [hours, minutes, seconds].join("");
-    setTime([hours, minutes, seconds].join(""));
 
+    const joined = [hours, minutes, seconds].join("");
+    timeLeft.current = joined;
+    setTime(joined);
+    document.title = formatTimer(joined);
     if (+hours + +minutes + +seconds === 0) {
       toggleRunning(false);
-      return alert("finish");
+      alert("finished");
+      document.title = "finished!";
+      setStarted(false);
     }
   };
-  useEffect(() => {
-    if (!running) {
-      return clearInterval(intervalID);
-    }
-    const Id = setInterval(loop, 1000);
-    setIntervalID(Id);
-  }, [running]);
-
   const start = () => {
     setStarted(true);
     toggleRunning(true);
@@ -56,37 +54,53 @@ const Timer = () => {
     }
 
     setTime([hours, minutes, seconds].join(""));
-    timeLeft = [hours, minutes, seconds].join("");
+    timeLeft.current = [hours, minutes, seconds].join("");
   };
+  const reset = () => {
+    setStarted(false);
+    timeLeft.current = "000000";
+    setTime("000000");
+    toggleRunning(false);
+  };
+  useEffect(() => {
+    if (!running) {
+      return clearInterval(intervalId.current);
+    }
+    intervalId.current = setInterval(loop, 1000);
+  }, [running]);
+  useEffect(() => {
+    setInterval(() => console.log(intervalId.current), 1000);
+  }, []);
+
   return (
     <div className="container">
       <div className="clock-container">
         <h1>Timer</h1>
         <div className="time">{formatTimer(time)}</div>
 
-        <div className="numpad">
-          {!started ? (
-            <NumPad {...{ time, setTime, start }} />
+        <div className={`${!started ? "numpad" : "hide"}`}>
+          <NumPad {...{ time, setTime, start }} />
+        </div>
+
+        <div className={`${!started ? "hide" : "controls"}`}>
+          {running ? (
+            <button
+              className="control pause"
+              onClick={() => toggleRunning(false)}
+            >
+              <AiOutlinePause />
+            </button>
           ) : (
-            <div>
-              {running ? (
-                <button
-                  className="control danger"
-                  onClick={() => toggleRunning(false)}
-                >
-                  Pause
-                </button>
-              ) : (
-                <button
-                  className="control start"
-                  onClick={() => toggleRunning(true)}
-                >
-                  Play
-                </button>
-              )}
-              <button onClick={() => console.log({ time })}>log time</button>
-            </div>
+            <button
+              className="control start"
+              onClick={() => toggleRunning(true)}
+            >
+              <FiPlay />
+            </button>
           )}
+          <button className="control danger" onClick={reset}>
+            <AiOutlineClose />
+          </button>
         </div>
       </div>
     </div>

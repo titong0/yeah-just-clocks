@@ -1,7 +1,7 @@
-import { formatTimer } from "../helpers";
+import { FiDelete } from "react-icons/fi";
+
 
 const NumPad = (props) => {
-
   const addNum = (num) => {
     let str = props.time;
     if (str[0] !== "0") return alert("nao nao");
@@ -36,7 +36,7 @@ const NumPad = (props) => {
         00
       </button>
       <button className="danger" onClick={delNum}>
-        D
+        <FiDelete />
       </button>
       <div></div>
       {props.time !== "000000" ? (
