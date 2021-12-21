@@ -45,7 +45,7 @@ const NumPad = (props) => {
         .map((i, idx) => {
           return (
             <button
-              className={`num ${idx == highlighted ? "hover" : ""}`}
+              className={`num ${idx === highlighted ? "hover" : ""}`}
               onClick={() => addNum(idx.toString())}
               key={idx}
               tabIndex="-1"
