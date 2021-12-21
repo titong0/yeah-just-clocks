@@ -4,12 +4,12 @@ import Timer from "./clocks/Timer";
 import Home from "./Home";
 import Navbar from "./Navbar";
 import "./App.css";
-
+import "./utils.css";
 function App() {
   return (
     <div className="App">
       <Router>
-      <Navbar />
+        <Navbar />
         <Routes>
           <Route path="stopwatch" element={<Stopwatch />} />
           <Route path="timer" element={<Timer />} />

@@ -10,6 +10,7 @@ const Stopwatch = () => {
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(["0", "0", "0"]);
   const [laps, setLaps] = useState([]);
+
   const run = () => {
     totalMs.current += 30;
     setTime(formatMs(totalMs.current));
@@ -32,12 +33,24 @@ const Stopwatch = () => {
     }
   }, [running]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.composedPath().find((i) => i.nodeName === "BUTTON")) return;
+      if (["Space", "Enter"].includes(event.code)) {
+        setRunning((r) => !r);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <div className="container">
-      <div className="clock-container">
+      <div className="clock-container ">
         <h2>Stopwatch</h2>
 
-        <div className="time">
+        <div className="time pointer" onClick={() => setRunning(!running)}>
           {`
         ${pad(time[0], 2)}:${pad(time[1], 2)}.${pad(time[2], 2)}
         `}
@@ -45,13 +58,7 @@ const Stopwatch = () => {
         <div className="controls">
           <button
             className={`control start`}
-            onClick={
-              running
-                ? () => setRunning(false)
-                : () => {
-                    setRunning(true);
-                  }
-            }
+            onClick={() => setRunning(!running)}
           >
             {running ? <AiOutlinePause /> : <FiPlay />}
           </button>
@@ -68,7 +75,7 @@ const Stopwatch = () => {
           {laps.map((currLap, idx) => {
             const { diff, total } = formatLaps(currLap, laps[idx - 1]);
             return (
-              <li>
+              <li key={idx}>
                 <span style={{ marginRight: "1.7em" }}>{diff}</span>
                 {total}
               </li>
