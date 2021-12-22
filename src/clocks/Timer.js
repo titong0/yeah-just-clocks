@@ -110,7 +110,8 @@ const Timer = () => {
             <div className="timer-suggestions">
               <span onClick={() => setTime("000010")}>00:00:10</span>
               <span onClick={() => setTime("000030")}>00:00:30</span>
-              <span onClick={() => setTime("000130")}>00:01:00</span>
+              <span onClick={() => setTime("000100")}>00:01:00</span>
+              <span onClick={() => setTime("000130")}>00:01:30</span>
               <span onClick={() => setTime("000500")}>00:05:00</span>
               <span onClick={() => setTime("002500")}>00:25:00</span>
               <span onClick={() => setTime("003000")}>00:30:00</span>
