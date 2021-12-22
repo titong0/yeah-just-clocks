@@ -54,7 +54,8 @@ const Timer = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (!started) {
+      if (event.composedPath().find((i) => i.nodeName === "BUTTON")) return;
+      if (!started || time === "000000") {
         return;
       }
       if (["Delete", "Backspace"].includes(event.code)) {
@@ -75,28 +76,39 @@ const Timer = () => {
     <div className="container">
       <h1>Timer</h1>
       <div className="clock-container timer">
-        <div className="time">{formatTimer(time)}</div>
-        <div className={`${!started ? "numpad" : "hide"}`}>
-          <NumPad {...{ time, setTime, start }} />
+        <div>
+          <div className="time">{formatTimer(time)}</div>
+          {started ? (
+            <div className="controls">
+              <div className="container">
+                <button
+                  className={`control ${running ? "pause" : "start"}`}
+                  onClick={() => toggleRunning(!running)}
+                >
+                  {running ? <AiOutlinePause /> : <FiPlay />}
+                </button>
+                <span className="desktop-shortcut">
+                  <AiOutlineEnter size="45" />
+                </span>
+              </div>
+              <div className="container">
+                <button className="control danger" onClick={reset}>
+                  <AiOutlineDelete />
+                </button>
+                <span className="desktop-shortcut">
+                  <FiDelete size="45" />
+                </span>
+              </div>
+            </div>
+          ) : null}
         </div>
-
-        <div className={`${!started ? "hide" : "controls"}`}>
-          <div className="container">
-            <button
-              className={`control ${running ? "pause" : "start"}`}
-              onClick={() => toggleRunning(!running)}
-            >
-              {running ? <AiOutlinePause /> : <FiPlay />}
-            </button>
-            <AiOutlineEnter size="45"/>
+        {!started ? (
+          <div className="numpad">
+            <NumPad {...{ time, setTime, start }} />
           </div>
-          <div className="container">
-            <button className="control danger" onClick={reset}>
-              <AiOutlineDelete />
-            </button>
-            <FiDelete size="45" />
-          </div>
-        </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

@@ -25,11 +25,9 @@ nav {
   text-decoration: none;
   color: white;
 }
-
 .container {
   display: grid;
   justify-items: center;
-  row-gap: 0.4rem;
 }
 .clock-container {
   display: flex;
@@ -45,7 +43,6 @@ nav {
   font-size: 18vw;
   color: hsl(0, 0%, 15%);
 }
-
 .controls {
   display: flex;
   justify-content: center;
@@ -53,6 +50,7 @@ nav {
   gap: 1rem;
   width: 100%;
   font-size: 1em;
+  margin: 1rem 0;
   transition: var(--trTime);
 }
 .control {
@@ -63,12 +61,13 @@ nav {
   border: 1px solid transparent;
   border-radius: 12px;
   box-shadow: rgb(43, 43, 43) 2px 3px 7px;
-  transition: color 100ms;
+  animation: appear 200ms;
   cursor: pointer;
 }
 .control svg {
   width: 40px;
   height: auto;
+  animation: appear 200ms;
 }
 .control:active {
   filter: brightness(75%);
@@ -94,14 +93,9 @@ nav {
 }
 
 .laps {
-  padding-left: 2.3em;
-  font-size: 1.3em;
+  font-size: 1.3rem;
   font-family: "PT Mono";
-  transition: 700ms;
-}
-
-.laps > li {
-  margin: 0.5em 0;
+  animation: appear 200ms;
 }
 
 .numpad {
@@ -110,6 +104,7 @@ nav {
   grid-template-rows: repeat(3, 1fr);
   gap: 0.5em;
   transition: var(--trTime);
+  animation: appear 200ms;
 }
 .numpad > button {
   display: flex;
@@ -129,28 +124,41 @@ nav {
 .numpad .start {
   border: black solid 2px;
 }
-
+.numpad .num:hover {
+  transition: 200ms;
+  filter: brightness(75%);
+}
 @media (min-width: 768px) {
+  .time {
+    font-size: 11vw;
+  }
+  .stopwatch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .laps-container {
+    align-self: flex-start;
+  }
   .timer {
     display: grid;
     align-items: flex-start;
     column-gap: 5rem;
     grid-template-columns: 1.5fr 1fr;
   }
-  .time {
-    font-size: 11vw;
-  }
   .timer .controls {
     align-self: center;
   }
-  .laps-container {
-    grid-column: 3 / 4;
-  }
-  .numpad .num:hover {
-    filter: brightness(75%);
-  }
+
   /* This ugly thing is  to force hover state with js*/
   .numpad .num.hover {
     filter: brightness(75%);
+  }
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

@@ -23,6 +23,8 @@ const NumPad = (props) => {
 
   useEffect(() => {
     const handleDigitPress = (event) => {
+      if (event.composedPath().find((i) => i.nodeName === "BUTTON")) return;
+
       if (event.code.startsWith("Digit")) {
         addNum(event.code.substr(5, 1));
       }
@@ -30,7 +32,9 @@ const NumPad = (props) => {
         delNum();
       }
       if (event.code === "Enter") {
-        props.start();
+        if (props.time !== "000000") {
+          props.start();
+        }
       }
     };
     document.addEventListener("keydown", handleDigitPress);
@@ -54,7 +58,7 @@ const NumPad = (props) => {
             </button>
           );
         })}
-      <button className="num" onClick={() => props.addNum("00")} tabIndex="-1">
+      <button className="num" onClick={() => addNum("00")} tabIndex="-1">
         00
       </button>
       <button className="danger" onClick={delNum} tabIndex="-1">

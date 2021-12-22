@@ -2,22 +2,23 @@ body {
   padding-top: calc(var(--navHeight) + 25px);
   background-color: var(--bg);
 }
-.hide {
-  width: 0;
-  height: 0;
-  opacity: 0;
-}
+
 .pointer {
   cursor: pointer;
 }
 .only-desktop {
   display: none;
 }
+.desktop-shortcut {
+  display: none;
+}
 .highlight {
   color: var(--highlight);
 }
 @media (pointer: fine) {
-  .only-desktop {
-    display: block;
+  .desktop-shortcut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
