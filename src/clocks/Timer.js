@@ -76,7 +76,7 @@ const Timer = () => {
     <div className="container">
       <h1>Timer</h1>
       <div className="clock-container timer">
-        <div>
+        <div style={started ? { gridColumn: "1 / -1" } : {}}>
           <div className="time">{formatTimer(time)}</div>
           {started ? (
             <div className="controls">
@@ -103,9 +103,20 @@ const Timer = () => {
           ) : null}
         </div>
         {!started ? (
-          <div className="numpad">
-            <NumPad {...{ time, setTime, start }} />
-          </div>
+          <>
+            <div className="numpad">
+              <NumPad {...{ time, setTime, start }} />
+            </div>
+            <div className="timer-suggestions">
+              <span onClick={() => setTime("000010")}>00:00:10</span>
+              <span onClick={() => setTime("000030")}>00:00:30</span>
+              <span onClick={() => setTime("000130")}>00:01:00</span>
+              <span onClick={() => setTime("000500")}>00:05:00</span>
+              <span onClick={() => setTime("002500")}>00:25:00</span>
+              <span onClick={() => setTime("003000")}>00:30:00</span>
+              <span onClick={() => setTime("010000")}>01:00:00</span>
+            </div>
+          </>
         ) : (
           <div></div>
         )}

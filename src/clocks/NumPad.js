@@ -13,12 +13,13 @@ const NumPad = (props) => {
 
   const addNum = (num) => {
     let str = props.time;
-    if (str[0] !== "0") return alert("nao nao");
+    // if timer is already "full"
+    if (str[0] !== "0") return;
     str += num;
     str = str.slice(num.length);
     props.setTime(str);
-    setHighlighted(num);
-    setTimeout(() => setHighlighted(21), 200);
+    setHighlighted(parseInt(num));
+    setTimeout(() => setHighlighted(-1), 200);
   };
 
   useEffect(() => {
