@@ -1,4 +1,4 @@
-# clocks! 
+# Clocks! 
 
 ### Who doesn't want a timer? I certainly do
 This project has keyboard support so please try that out!
