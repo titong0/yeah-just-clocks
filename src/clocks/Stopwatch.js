@@ -7,17 +7,25 @@ import {
 import { HiOutlineClock } from "react-icons/hi";
 import { MdOutlineSpaceBar } from "react-icons/md";
 import { useState, useEffect, useRef } from "react";
-import { formatLaps, formatMs, pad } from "../helpers";
+import { formatLaps, formatMs, formatStopwatchTime } from "../helpers";
+
+document.title = "Stopwatch";
 
 const Stopwatch = () => {
+  const start = useRef(null);
   const totalMs = useRef(0);
+  // this variable keeps the miliseconds before a pause
+  // because the start variable needs to be a date
+  // timeline looks something like *PausedMs -> (pause) -> Start*
+  //                               ______totalMs_________
+  const pausedMs = useRef(0);
   const intervalID = useRef(null);
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(["0", "0", "0"]);
   const [laps, setLaps] = useState([]);
 
   const run = () => {
-    totalMs.current += 30;
+    totalMs.current = new Date().getTime() - start.current + pausedMs.current;
     setTime(formatMs(totalMs.current));
   };
   const lap = () => {
@@ -32,9 +40,14 @@ const Stopwatch = () => {
 
   useEffect(() => {
     if (running) {
+      if (start.current === null) {
+        start.current = new Date().getTime();
+      }
       intervalID.current = setInterval(run, 30);
     } else {
       clearInterval(intervalID.current);
+      pausedMs.current = totalMs.current;
+      start.current = null;
     }
   }, [running]);
 
@@ -58,13 +71,11 @@ const Stopwatch = () => {
   });
   return (
     <div className="container">
-      <h2>Stopwatch</h2>
+      <h1>Stopwatch</h1>
       <div className="clock-container stopwatch ">
         <div>
           <div className="time pointer" onClick={() => setRunning(!running)}>
-            {`
-        ${pad(time[0], 2)}:${pad(time[1], 2)}.${pad(time[2], 2)}
-        `}
+            {formatStopwatchTime(time)}
           </div>
           <div className="controls">
             <div className="container">
@@ -86,7 +97,7 @@ const Stopwatch = () => {
                 <MdOutlineSpaceBar size="45" />
               </span>
             </div>
-            {running ? (
+            {totalMs.current !== 0 ? (
               <div className="container">
                 <button className="control danger" onClick={reset}>
                   <AiOutlineDelete />

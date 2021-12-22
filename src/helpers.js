@@ -15,6 +15,9 @@ export const formatMs = (ms) => {
   return [minutes, seconds, milliseconds];
 };
 
+export const formatStopwatchTime = (time) => {
+  return `${pad(time[0], 2)}:${pad(time[1], 2)}.${pad(time[2], 2)}`;
+};
 export const formatLaps = (lap, prevLap = 0) => {
   const msDiff = lap - prevLap;
   const formatedDiff = formatMs(msDiff);

@@ -1,7 +1,7 @@
 body,
 button {
   margin: 0;
-  font-family: "Philosopher", sans-serif;
+  font-family: "MontSerrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,6 +11,7 @@ button,
 select,
 a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  text-decoration: none;
 }
 h1,
 h2,
@@ -25,8 +26,4 @@ code {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-@font-face {
-  font-family: Clock;
-  src: url("./alarm\ clock.ttf");
 }
